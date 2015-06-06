@@ -20,9 +20,7 @@
 
 #import <Foundation/Foundation.h>
 #import <Atlas/Atlas.h>
-//#import <Parse/Parse.h>
 #import <Lock/Lock.h>
-//#import "PFUser+ATLParticipant.h"
 #import "A0UserProfile+ATLParticipant.h"
 
 @interface ConversationViewController : ATLConversationViewController

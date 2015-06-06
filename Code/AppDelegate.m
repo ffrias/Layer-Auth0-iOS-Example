@@ -19,7 +19,6 @@
 //
 
 #import <LayerKit/LayerKit.h>
-//#import <Parse/Parse.h>
 #import <Lock/Lock.h>
 #import "AppDelegate.h"
 #import "ViewController.h"
@@ -27,23 +26,26 @@
 
 @implementation AppDelegate
 
-#pragma mark TODO: Before first launch, update LayerAppIDString, ParseAppIDString or ParseClientKeyString values
-#warning "TODO:If LayerAppIDString, ParseAppIDString or ParseClientKeyString are nil, this app will crash"
+#pragma mark TODO: Before first launch, update LayerAppIDString, Auth0ClientID, Auth0ClientDomain values
+#warning "TODO:If LayerAppIDString, Auth0ClientID, Auth0ClientDomain are nil, this app will crash"
 static NSString *const LayerAppIDString = @"44a270b6-7c58-11e4-bbba-fcf307000352";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+
+    NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
+    NSString *auth0ClientID = info[@"Auth0ClientId"];
+    NSString *auth0Domain = info[@"Auth0Domain"];
+    
+     if (LayerAppIDString.length == 0 || auth0ClientID.length == 0 || auth0Domain.length == 0) {
+         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Invalid Configuration" message:@"You have not configured your Layer and/or Auth0 keys. Please check your configuration and try again." delegate:nil cancelButtonTitle:@"Rats!" otherButtonTitles:nil];
+         [alertView show];
+         return YES;
+     }
+    
     A0Lock *lock = [[Application sharedInstance] lock];
     [lock applicationLaunchedWithOptions:launchOptions];
-    
-    /*
-    if (LayerAppIDString.length == 0 || ParseAppIDString.length == 0 || ParseClientKeyString.length == 0) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Invalid Configuration" message:@"You have not configured your Layer and/or Parse keys. Please check your configuration and try again." delegate:nil cancelButtonTitle:@"Rats!" otherButtonTitles:nil];
-        [alertView show];
-        return YES;
-    }
-     */
     
     // Initializes a LYRClient object
     NSUUID *appID = [[NSUUID alloc] initWithUUIDString:LayerAppIDString];

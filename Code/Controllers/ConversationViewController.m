@@ -19,7 +19,6 @@
 //
 
 #import <SVProgressHUD/SVProgressHUD.h>
-//#import <Parse/Parse.h>
 #import <Lock/Lock.h>
 #import <Bolts/Bolts.h>
 #import "ConversationViewController.h"
@@ -91,7 +90,6 @@
         [[UserManager sharedManager] queryAndCacheUsersWithIDs:@[participantIdentifier] completion:^(NSArray *participants, NSError *error) {
             if (participants && error == nil) {
                 [self.addressBarController reloadView];
-                // TODO: Need a good way to refresh all the messages for the refreshed participants...
                 [self reloadCellsForMessagesSentByParticipantWithIdentifier:participantIdentifier];
             } else {
                 NSLog(@"Error querying for users: %@", error);
@@ -155,7 +153,6 @@
 
 -(void)addressBarViewController:(ATLAddressBarViewController *)addressBarViewController searchForParticipantsMatchingText:(NSString *)searchText completion:(void (^)(NSArray *))completion
 {
-    NSLog(@"addressBarViewController searchText: %@",searchText);
     [[UserManager sharedManager] queryForUserWithName:searchText completion:^(NSArray *participants, NSError *error) {
         if (!error) {
             if (completion) completion(participants);
@@ -177,7 +174,6 @@
 
 - (void)participantTableViewController:(ATLParticipantTableViewController *)participantTableViewController didSearchWithString:(NSString *)searchText completion:(void (^)(NSSet *))completion
 {
-    NSLog(@"participantTableViewController searchText: %@",searchText);
     [[UserManager sharedManager] queryForUserWithName:searchText completion:^(NSArray *participants, NSError *error) {
         if (!error) {
             if (completion) completion([NSSet setWithArray:participants]);

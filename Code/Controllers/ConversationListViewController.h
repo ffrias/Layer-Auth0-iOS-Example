@@ -19,8 +19,6 @@
 
 #import <UIKit/UIKit.h>
 #import <Atlas/Atlas.h>
-//#import <ParseUI.h>
-//#import "PFUser+ATLParticipant.h"
 #import "A0UserProfile+ATLParticipant.h"
 #import "ViewController.h"
 #import "Application.h"

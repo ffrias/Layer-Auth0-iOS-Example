@@ -1,6 +1,6 @@
 //
-//  Layer-Parse-iOS-ExampleTests.m
-//  Layer-Parse-iOS-ExampleTests
+//  Layer-Auth0-iOS-ExampleTests.m
+//  Layer-Auth0-iOS-ExampleTests
 //
 //  Created by Abir Majumdar on 6/5/15.
 //  Copyright (c) 2015 Layer. All rights reserved.

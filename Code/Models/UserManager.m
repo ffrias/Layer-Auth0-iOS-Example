@@ -19,11 +19,8 @@
 //
 
 #import "UserManager.h"
-//#import <Parse/Parse.h>
 #import <Lock/Lock.h>
-//#import "PFUser+ATLParticipant.h"
 #import "A0UserProfile+ATLParticipant.h"
-//#import <Bolts/Bolts.h>
 #import "Application.h"
 #import <SimpleKeychain/A0SimpleKeychain.h>
 

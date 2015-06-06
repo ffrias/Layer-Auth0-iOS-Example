@@ -21,6 +21,7 @@
 		25713D711AC6071600FC5D38 /* UserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 25713D691AC6071600FC5D38 /* UserManager.m */; };
 		5AD49C051AC399DD00B1B0C8 /* LayerAuth0SampleAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AD49C041AC399DD00B1B0C8 /* LayerAuth0SampleAppTests.m */; };
 		8816A0661B214B0C00F25477 /* A0UserProfileQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 8816A0651B214B0C00F25477 /* A0UserProfileQuery.m */; };
+		881723E71B236FDB00CED9D6 /* LayerAuth0Splash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 881723E61B236FDB00CED9D6 /* LayerAuth0Splash@2x.png */; };
 		88C795B31B226CEA00B9804C /* github.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C795B11B226CEA00B9804C /* github.png */; };
 		88C795B41B226CEA00B9804C /* auth0.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C795B21B226CEA00B9804C /* auth0.png */; };
 		88F5D17A1B1E7F4D00A0BD4B /* Application.m in Sources */ = {isa = PBXBuildFile; fileRef = 88F5D1791B1E7F4D00A0BD4B /* Application.m */; };
@@ -67,6 +68,7 @@
 		5D2577FDB282E79E4AA3E979 /* Pods-Layer-Auth0-iOS-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Layer-Auth0-iOS-Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Layer-Auth0-iOS-Example/Pods-Layer-Auth0-iOS-Example.debug.xcconfig"; sourceTree = "<group>"; };
 		8816A0641B214B0C00F25477 /* A0UserProfileQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A0UserProfileQuery.h; sourceTree = "<group>"; };
 		8816A0651B214B0C00F25477 /* A0UserProfileQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A0UserProfileQuery.m; sourceTree = "<group>"; };
+		881723E61B236FDB00CED9D6 /* LayerAuth0Splash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LayerAuth0Splash@2x.png"; sourceTree = "<group>"; };
 		88C795B11B226CEA00B9804C /* github.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = github.png; sourceTree = "<group>"; };
 		88C795B21B226CEA00B9804C /* auth0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = auth0.png; sourceTree = "<group>"; };
 		88F5D1781B1E7F4D00A0BD4B /* Application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Application.h; path = ../Application.h; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 				25713D401AC605FC00FC5D38 /* Info.plist */,
 				88C795B11B226CEA00B9804C /* github.png */,
 				88C795B21B226CEA00B9804C /* auth0.png */,
+				881723E61B236FDB00CED9D6 /* LayerAuth0Splash@2x.png */,
 				25713D411AC605FC00FC5D38 /* LayerAuth0AppIcon@2x.png */,
 			);
 			path = Resources;
@@ -127,8 +130,7 @@
 				25713D5A1AC6071600FC5D38 /* Categories */,
 				25713D5D1AC6071600FC5D38 /* Controllers */,
 				25713D671AC6071600FC5D38 /* Singletons */,
-				8816A0641B214B0C00F25477 /* A0UserProfileQuery.h */,
-				8816A0651B214B0C00F25477 /* A0UserProfileQuery.m */,
+				881723E81B2370AD00CED9D6 /* Utilities */,
 			);
 			path = Code;
 			sourceTree = "<group>";
@@ -218,6 +220,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		881723E81B2370AD00CED9D6 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				8816A0641B214B0C00F25477 /* A0UserProfileQuery.h */,
+				8816A0651B214B0C00F25477 /* A0UserProfileQuery.m */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -301,6 +312,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				88C795B41B226CEA00B9804C /* auth0.png in Resources */,
+				881723E71B236FDB00CED9D6 /* LayerAuth0Splash@2x.png in Resources */,
 				25713D4F1AC605FC00FC5D38 /* Main.storyboard in Resources */,
 				25713D501AC605FC00FC5D38 /* Images.xcassets in Resources */,
 				25713D521AC605FC00FC5D38 /* LayerAuth0AppIcon@2x.png in Resources */,

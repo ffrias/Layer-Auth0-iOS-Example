@@ -16,9 +16,10 @@
 
 @implementation A0UserProfileQuery
 
+static NSString *const A0BearerToken = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJkbXZvTDhQMWw2QXU2aWpYbFE0WGVobTcza3hBQ1M3SSIsInNjb3BlcyI6eyJ1c2VycyI6eyJhY3Rpb25zIjpbInJlYWQiXX19LCJpYXQiOjE0MzMyOTI2MDEsImp0aSI6ImE4NjBjMDg2MWMwNmEwZmRmMjQ1NzE0YWRmNmVmYTA5In0.2aTso2Cl_Ygef5yiJVWkZbIivQelJ7NrzrFpqguTMGY";
+
 - (instancetype)whereKey:(NSString *)key containedIn:(NSArray *)array
 {
-//    NSLog(@"whereKey: %@, containedIn: %@", key, array);
     _key = key;
     _queryType = A0UserProfileQueryTypeContainIn;
     _searchTerm = array;
@@ -27,7 +28,6 @@
 
 - (instancetype)whereKey:(NSString *)key notEqualTo:(id)object
 {
-//    NSLog(@"whereKey: %@, containedIn: %@", key, object);
     _key = key;
     _queryType = A0UserProfileQueryTypeNotEqualTo;
     _searchTerm = object;
@@ -36,19 +36,13 @@
 
 - (void)findObjectsInBackgroundWithBlock:(void (^)(NSArray *, NSError *))completion
 {
-/*
-    NSLog(@"findObjectsInBackgroundWithBlock");
-    NSLog(@"key: %@", self.key);
-    NSLog(@"queryType: %lu", (unsigned long)self.queryType);
-    NSLog(@"searchTerm: %@", self.searchTerm);
-*/
-    NSLog(@"findObjectsInBackgroundWithBlock START: %@", self.searchTerm);
-    NSURL *baseURL = [NSURL URLWithString:@"https://abir.auth0.com/api/v2/"];
+    A0Lock *lock = [[Application sharedInstance] lock];
+    NSURL *baseURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/api/v2/",lock.domainURL]];
     NSURL *relativeURL = [NSURL URLWithString:@"users?include_totals=true" relativeToURL:baseURL];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:relativeURL];
     request.HTTPMethod = @"GET";
-    [request setValue:@"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJkbXZvTDhQMWw2QXU2aWpYbFE0WGVobTcza3hBQ1M3SSIsInNjb3BlcyI6eyJ1c2VycyI6eyJhY3Rpb25zIjpbInJlYWQiXX19LCJpYXQiOjE0MzMyOTI2MDEsImp0aSI6ImE4NjBjMDg2MWMwNmEwZmRmMjQ1NzE0YWRmNmVmYTA5In0.2aTso2Cl_Ygef5yiJVWkZbIivQelJ7NrzrFpqguTMGY" forHTTPHeaderField:@"Authorization"];
+    [request setValue:[NSString stringWithFormat:@"Bearer %@", A0BearerToken] forHTTPHeaderField:@"Authorization"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     
     NSDictionary *parameters = @{ };
@@ -76,18 +70,15 @@
                 for (id user in users)
                 {
                     A0UserProfile *profile = [[A0UserProfile alloc] initWithDictionary:user];
-                    //NSLog(@"queryForAllUsersWithCompletion profile.firstName:%@",profile.firstName);
                     [mutableArray addObject:profile];
                 }
                 NSArray *array = [self getFilteredResults:mutableArray];
-                NSLog(@"findObjectsInBackgroundWithBlock END: %@", self.searchTerm);
                 completion(array, nil);
-                //NSLog(@"users: %@", users);
             }
         }
         else
         {
-            NSString *domain = @"abir.auth0.com";
+            NSString *domain = [relativeURL host];
             NSInteger code = 1;
             NSDictionary *userInfo =
             @{
@@ -99,17 +90,13 @@
             completion(nil, error);
         }
     }] resume];        
-
-    //completion(@[@"findObjectsInBackgroundWithBlock1", @"findObjectsInBackgroundWithBlock2"],nil);
 }
 
 - (NSArray *)getFilteredResults:(NSMutableArray*)allUsers
 {
-//    NSLog(@"allUsers.count: %lu",(unsigned long)allUsers.count);
     NSArray* result;
     if(self.queryType == A0UserProfileQueryTypeNotEqualTo)
     {
-        NSLog(@"A0UserProfileQueryTypeNotEqualTo");
         NSArray* arrayOfProfiles = [allUsers copy];
         NSPredicate* containsAKeyword = [NSPredicate predicateWithBlock: ^BOOL(id evaluatedObject, NSDictionary *bindings) {
             A0UserProfile* profile = (A0UserProfile*)evaluatedObject;
@@ -126,7 +113,6 @@
     }
     else if (self.queryType == A0UserProfileQueryTypeContainIn)
     {
-        NSLog(@"A0UserProfileQueryTypeContainIn");
         NSArray* arrayOfProfiles = [allUsers copy];
         NSPredicate* containsAKeyword = [NSPredicate predicateWithBlock: ^BOOL(id evaluatedObject, NSDictionary *bindings) {
             A0UserProfile* profile = (A0UserProfile*)evaluatedObject;

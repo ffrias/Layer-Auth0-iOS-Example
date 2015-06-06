@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "A0UserProfile+ATLParticipant.h"
+#import "Application.h"
 
 @interface A0UserProfileQuery : NSObject
 

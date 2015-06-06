@@ -48,8 +48,6 @@
     A0SimpleKeychain *store = [Application sharedInstance].store;
     A0UserProfile *profile = [NSKeyedUnarchiver unarchiveObjectWithData:[store dataForKey:@"profile"]];
     NSString *idToken = [store stringForKey:@"id_token"];
-    //NSLog(@"profile: %@", profile.name);
-    //NSLog(@"idToken: %@", idToken);
     
     if (idToken) {
         if ([A0JWTDecoder isJWTExpired:idToken]) {
@@ -233,7 +231,6 @@
 - (void)presentConversationListViewController
 {
     [SVProgressHUD dismiss];
-    //NSLog(@"presentConversationListViewController");
      ConversationListViewController *controller = [ConversationListViewController  conversationListViewControllerWithLayerClient:self.layerClient];
      [self.navigationController pushViewController:controller animated:YES];
 }
