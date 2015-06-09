@@ -19,10 +19,6 @@
 
 #import <UIKit/UIKit.h>
 #import <Atlas/Atlas.h>
-#import "A0UserProfile+ATLParticipant.h"
-#import "ViewController.h"
-#import "Application.h"
-#import <SimpleKeychain/A0SimpleKeychain.h>
 
 @interface ConversationListViewController : ATLConversationListViewController
 

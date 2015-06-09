@@ -18,7 +18,7 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import <Atlas/Atlas.h>
 #import <Lock/Lock.h>
 #import "A0UserProfile+ATLParticipant.h"

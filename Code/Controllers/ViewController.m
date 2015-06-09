@@ -20,13 +20,15 @@
 
 #import "ViewController.h"
 #import "Application.h"
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "UserManager.h"
-#import <ATLConstants.h>
+#import <SVProgressHUD/SVProgressHUD.h>
+#import "ATLConstants.h"
 #import <libextobjc/EXTScope.h>
 #import <JWTDecode/A0JWTDecoder.h>
-//#import <MBProgressHUD/MBProgressHUD.h>
 #import <SimpleKeychain/A0SimpleKeychain.h>
+#import "ConversationListViewController.h"
+#import <LayerKit/LayerKit.h>
+#import <Lock/Lock.h>
 
 @interface ViewController ()
 
@@ -46,10 +48,9 @@
     [super viewDidAppear:animated];
     
     A0SimpleKeychain *store = [Application sharedInstance].store;
-    A0UserProfile *profile = [NSKeyedUnarchiver unarchiveObjectWithData:[store dataForKey:@"profile"]];
     NSString *idToken = [store stringForKey:@"id_token"];
-    
     if (idToken) {
+        A0UserProfile *profile = [NSKeyedUnarchiver unarchiveObjectWithData:[store dataForKey:@"profile"]];
         if ([A0JWTDecoder isJWTExpired:idToken]) {
             NSLog(@"Auth0 token has expired, refreshing.");
             NSString *refreshToken = [store stringForKey:@"refresh_token"];
@@ -152,7 +153,7 @@
         [self authenticationTokenWithUserId:userID completion:^(NSString *identityToken, NSError *error) {
             if (completion){
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(nil, error);
+                    completion(NO, error);
                 });
             }
         }];
@@ -175,7 +176,6 @@
         A0APIClient *client = [[[Application sharedInstance] lock] apiClient];
         A0AuthParameters *parameters = [A0AuthParameters newWithDictionary:@{
                                                                              @"id_token":    self.tokenID,
-                                                                             @"target":      @"vU834mVE0b8kXY1Pl8xsX00jQcGTuFKO",
                                                                              @"api_type":    @"layer",
                                                                              @"scope":       @[@"openid"],
                                                                              @"nonce":       nonce,

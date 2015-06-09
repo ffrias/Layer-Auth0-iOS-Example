@@ -18,10 +18,9 @@
 //  limitations under the License.
 //
 
-#import <LayerKit/LayerKit.h>
-#import <Lock/Lock.h>
 #import <UIKit/UIKit.h>
-#import "ConversationListViewController.h"
+
+@class LYRClient;
 
 @interface ViewController : UIViewController
 
