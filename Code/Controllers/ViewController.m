@@ -171,60 +171,30 @@
             }
             return;
         }
-        
-        NSURL *identityTokenURL = [NSURL URLWithString:@"https://abir.auth0.com/delegation"];
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:identityTokenURL];
-        request.HTTPMethod = @"POST";
-        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-        
 
-        NSDictionary *parameters = @{   @"client_id":   @"vU834mVE0b8kXY1Pl8xsX00jQcGTuFKO",
-                                        @"grant_type":  @"urn:ietf:params:oauth:grant-type:jwt-bearer",
-                                        @"id_token":    self.tokenID,
-                                        @"target":      @"vU834mVE0b8kXY1Pl8xsX00jQcGTuFKO",
-                                        @"api_type":    @"layer",
-                                        @"scope":       @"openid",
-                                        @"nonce":       nonce };
-        NSData *requestBody = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
-        request.HTTPBody = requestBody;
-        
-        NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration];
-        [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            if (error) {
-                completion(nil, error);
-                return;
-            }
-            
-            // Deserialize the response
-            NSDictionary *responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            if(![responseObject valueForKey:@"error"]) {
-                NSString *identityToken = responseObject[@"id_token"];
-                [self.layerClient authenticateWithIdentityToken:identityToken completion:^(NSString *authenticatedUserID, NSError *error) {
-                    if (authenticatedUserID) {
-                        if (completion) {
-                            completion(identityToken, nil);
-                        }
-                        NSLog(@"Layer Authenticated as User: %@", authenticatedUserID);
-                    } else {
-                        completion(nil, error);
+        A0APIClient *client = [[[Application sharedInstance] lock] apiClient];
+        A0AuthParameters *parameters = [A0AuthParameters newWithDictionary:@{
+                                                                             @"id_token":    self.tokenID,
+                                                                             @"target":      @"vU834mVE0b8kXY1Pl8xsX00jQcGTuFKO",
+                                                                             @"api_type":    @"layer",
+                                                                             @"scope":       @[@"openid"],
+                                                                             @"nonce":       nonce,
+                                                                             }];
+        [client fetchDelegationTokenWithParameters:parameters success:^(NSDictionary *delegationToken) {
+            NSString *identityToken = delegationToken[@"id_token"];
+            [self.layerClient authenticateWithIdentityToken:identityToken completion:^(NSString *authenticatedUserID, NSError *error) {
+                if (authenticatedUserID) {
+                    if (completion) {
+                        completion(identityToken, nil);
                     }
-                }];
-            } else {
-                NSString *domain = @"layer-identity-provider.herokuapp.com";
-                NSInteger code = [responseObject[@"status"] integerValue];
-                NSDictionary *userInfo =
-                @{
-                  NSLocalizedDescriptionKey: @"Layer Identity Provider Returned an Error.",
-                  NSLocalizedRecoverySuggestionErrorKey: @"There may be a problem with your APPID."
-                  };
-                
-                NSError *error = [[NSError alloc] initWithDomain:domain code:code userInfo:userInfo];
-                completion(nil, error);
-            }
-            
-        }] resume];
+                    NSLog(@"Layer Authenticated as User: %@", authenticatedUserID);
+                } else {
+                    completion(nil, error);
+                }
+            }];
+        } failure:^(NSError *error) {
+            completion(nil, error);
+        }];
     }];
 }
 
